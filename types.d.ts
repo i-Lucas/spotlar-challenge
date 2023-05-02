@@ -8,32 +8,21 @@ interface ICurrency {
   name: string;
 };
 
-interface IFromCurrencyToCurrency {
-  from: string;
-  to: string;
-};
-
-interface IExchangeData {
-  currentCurrency: IFromCurrencyToCurrency;
+interface IFormData {
+  currentCurrency: {
+    from: string;
+    to: string;
+  };
   exchangeRate?: IExchangeRate;
-  amount: number;
-  convertedAmount: number;
+  amount?: number;
 };
 
 interface IFormHtmlProps {
   props: {
-    setExchangeData: React.Dispatch<React.SetStateAction<IExchangeData>>;
-    setResult: React.Dispatch<React.SetStateAction<{
-      showResult: boolean;
-      loading: boolean;
-    }>>;
+    setFormData: React.Dispatch<React.SetStateAction<IFormData>>
     handleSubmit: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
-    exchangeData: IExchangeData;
+    formData: IFormData;
     currencies: ICurrency[];
-    resultStatus: {
-      showResult: boolean;
-      loading: boolean;
-    };
   };
 };
 
@@ -55,3 +44,28 @@ interface IAwaitResults {
   showResult: boolean;
   loading: boolean;
 };
+
+interface IAppCurrencyContext {
+  currencies: {
+    from: string | undefined;
+    to: string | undefined;
+  };
+  status: {
+    loading: boolean;
+    error?: string | null
+  },
+  result?: {
+    showResult: boolean;
+    amount: number;
+    value: string;
+  }
+};
+
+interface RenderFormProps {
+  formData: IFormData,
+  currencies: ICurrency[],
+  setFromTo: (option: "from" | "to", value: string) => void
+  setAmount: (amount: string) => void
+};
+
+type HandleSubmitType = React.MouseEvent<HTMLButtonElement, MouseEvent>

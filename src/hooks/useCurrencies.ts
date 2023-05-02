@@ -14,7 +14,7 @@ export default function fetchCurrencies() {
   };
 
   const [currencies, setCurrencies] = React.useState<Status>(initialStatus);
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL + "@1/latest/currencies.min.json";
+  const apiUrl = process.env.API_URL + "@1/latest/currencies.min.json";
 
   React.useEffect(() => {
     fetch(apiUrl)

@@ -1,66 +1,64 @@
 import React from "react";
 import FormHtml from "./FormView";
+import styles from "@/styles/Form.module.css";
 import fetchCurrencies from "@/hooks/useCurrencies";
+import currencyContext from "@/context/currencyContext";
 import fetchExchangeRate from "@/hooks/fetchExchangeRate";
 
 export default function FormComponent() {
 
-  const { currencies, loading, error } = fetchCurrencies();
-  const [exchangeData, setExchangeData] = React.useState<IExchangeData>({
-    currentCurrency: { from: "", to: "" },
-    amount: 0,
-    convertedAmount: 0
-  });
+  const fetchedCurrencyData = fetchCurrencies();
+  const { appGlobalContext, setAppGlobalContext } = React.useContext(currencyContext);
+  const [formData, setFormData] = React.useState<IFormData>({ currentCurrency: { from: "", to: "" } });
 
-  const { amount, currentCurrency } = exchangeData;
-
-  const [resultStatus, setResult] = React.useState<IAwaitResults>({
-    showResult: false,
-    loading: false
-  });
-
-  async function handleSubmit(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+  async function handleSubmit(e: HandleSubmitType) {
     e.preventDefault();
 
-    setResult({ ...resultStatus, loading: true });
-
     try {
-      const exchangeRate = await fetchExchangeRate(currentCurrency.from, currentCurrency.to);
-      const convertedAmount = amount * exchangeRate.rate;
 
-      setExchangeData({
-        ...exchangeData,
-        exchangeRate,
-        convertedAmount
-      });
+      if (!formData.amount) return;
+      setAppGlobalContext({ ...appGlobalContext, status: { loading: true } });
+      const exchangeRate = await fetchExchangeRate(formData.currentCurrency.from, formData.currentCurrency.to);
 
-      setResult({
-        showResult: true,
-        loading: false
+      setFormData({ ...formData, exchangeRate });
+      setAppGlobalContext({
+        ...appGlobalContext,
+        status: { loading: false },
+        currencies: {
+          from: formData.currentCurrency.from,
+          to: formData.currentCurrency.to
+        },
+        result: {
+          showResult: true,
+          amount: formData.amount,
+          value: (formData.amount * exchangeRate.rate).toFixed(2),
+        }
       });
 
     } catch (error) {
 
       console.log(error);
-      return <div>error ...</div>;
-    }
-  };
-
-  if (loading) {
-    return <div>loading ...</div>;
-  };
-
-  if (error) {
-    return <div>error ...</div>;
+      return (
+        <div className={styles.form}>
+          <h1>error ... {`${error}`}</h1>
+        </div>
+      )
+    };
   };
 
   const formHtmlProps = {
-    setExchangeData,
-    setResult,
+    setFormData,
     handleSubmit,
-    exchangeData,
-    currencies,
-    resultStatus
+    formData,
+    currencies: fetchedCurrencyData.currencies
+  };
+
+  if (fetchedCurrencyData.loading) {
+    return (
+      <div className={styles.form}>
+        <h1>loading ... loader spinner here </h1>
+      </div>
+    )
   };
 
   return <FormHtml props={formHtmlProps} />

@@ -1,59 +1,68 @@
 import React from "react";
+import styles from "@/styles/Form.module.css";
 import { Input, Select } from "./FormControls";
+import currencyContext from "@/context/currencyContext";
 
 export default function FormHtml({ props }: IFormHtmlProps) {
 
-  const { exchangeData, currencies, resultStatus } = props;
-  const { setExchangeData, setResult, handleSubmit } = props;
+  const { appGlobalContext: globalData } = React.useContext(currencyContext);
 
-  const { loading, showResult } = resultStatus;
-  const { amount, convertedAmount, currentCurrency } = exchangeData;
-
-  const buttonContent = loading ? "loading..." : "convert";
-  const options = [{ label: "Choose", value: "" }, ...generateCurrencyOptions(currencies)];
+  const { formData, currencies } = props;
+  const { setFormData, handleSubmit } = props;
+  const buttonContent = globalData.status.loading ? "loading..." : "convert";
 
   const isEmpty = (str: string) => str.length === 0;
-  const viewButton = !isEmpty(currentCurrency.from) && !isEmpty(currentCurrency.to) && amount !== 0;
+  const isFromAndToEmpty = isEmpty(formData.currentCurrency.from) || isEmpty(formData.currentCurrency.to);
+  const viewButton = !isFromAndToEmpty && formData.amount !== 0 ? true : false;
+
+  function setFromTo(option: "from" | "to", value: string) {
+    setFormData({ ...formData, currentCurrency: { ...formData.currentCurrency, [option]: value } })
+  };
+
+  function setAmount(amount: string) {
+    setFormData({ ...formData, amount: parseFloat(amount) })
+  };
+
+  const renderFormProps = {
+    formData,
+    currencies,
+    setFromTo,
+    setAmount
+  };
 
   return (
-    <form onChange={() => setResult({ ...resultStatus, showResult: false })} style={formStyle}>
-
-      <Input
-        label="Amount:"
-        type="number"
-        value={amount}
-        onChange={(e) => setExchangeData({ ...exchangeData, amount: parseFloat(e.target.value) })} />
-
-      <Select
-        label="From:"
-        value={currentCurrency.from}
-        options={options}
-        onChange={(e) => setExchangeData({ ...exchangeData, currentCurrency: { ...currentCurrency, from: e.target.value } })}
-      />
-
-      <Select
-        label="To:"
-        value={currentCurrency.to}
-        options={options}
-        onChange={(e) => setExchangeData({ ...exchangeData, currentCurrency: { ...currentCurrency, to: e.target.value } })}
-      />
-
-      {showResult &&
-        renderResult(
-          amount,
-          currentCurrency.from,
-          currentCurrency.to,
-          convertedAmount.toFixed(2)
-        )
-      }
-
+    <form className={styles.form}>
+      {renderFormContent(renderFormProps)}
       {viewButton && <button onClick={handleSubmit}>{buttonContent}</button>}
     </form>
   );
 };
 
-function renderResult(amount: number, from: string, to: string, result: string) {
-  return <p>{amount} {from} is {result} {to}</p>
+function renderFormContent({ formData, currencies, setAmount, setFromTo }: RenderFormProps) {
+  const options = [{ label: "choose", value: "" }, ...generateCurrencyOptions(currencies)];
+  return (
+    <div>
+      <Input
+        type="number"
+        label="Amount:"
+        value={formData.amount ? formData.amount : 0}
+        onChange={(e) => setAmount(e.target.value)} />
+
+      <Select
+        label="From:"
+        options={options}
+        value={formData.currentCurrency.from}
+        onChange={(e) => setFromTo("from", e.target.value)}
+      />
+
+      <Select
+        label="To:"
+        options={options}
+        value={formData.currentCurrency.to}
+        onChange={(e) => setFromTo("to", e.target.value)}
+      />
+    </div>
+  )
 };
 
 function generateCurrencyOptions(currencies: ICurrency[]) {
@@ -61,11 +70,4 @@ function generateCurrencyOptions(currencies: ICurrency[]) {
     label: `${currency.name} (${currency.code})`,
     value: currency.code,
   }));
-};
-
-const formStyle: React.CSSProperties = {
-  width: "80%",
-  height: "20%",
-  margin: "auto",
-  backgroundColor: "tomato"
 };

@@ -1,10 +1,6 @@
-const { parsed: localEnv } = require('dotenv').config()
-
-const nextConfig = {
+module.exports = {
   reactStrictMode: true,
   env: {
-    API_URL: localEnv.API_URL,
+    API_URL: "https://cdn.jsdelivr.net/gh/fawazahmed0/currency-api"
   },
 }
-
-module.exports = nextConfig

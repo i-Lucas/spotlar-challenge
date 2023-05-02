@@ -2,7 +2,7 @@ export default async function fetchExchangeRate(fromCurrency: string, toCurrency
 
   const from = fromCurrency.toLowerCase();
   const to = toCurrency.toLowerCase();
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL + `@1/latest/currencies/${from}/${to}.json`;
+  const apiUrl = process.env.API_URL + `@1/latest/currencies/${from}/${to}.json`;
 
   const response = await fetch(apiUrl);
   const data = await response.json();

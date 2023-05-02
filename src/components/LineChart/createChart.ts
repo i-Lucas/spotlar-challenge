@@ -5,26 +5,32 @@ interface CurrencyPair {
   from: string;
   to: string;
   color: string;
-}
+};
 
 export function createChart(ctx: CanvasRenderingContext2D | null, currencyPair: CurrencyPair, data: number[]) {
   if (!ctx || !data.length) return;
 
   const { from, to, color } = currencyPair;
+  const labelFormat = (from: string, to: string) => `${from.toUpperCase()} - ${to.toUpperCase()}`;
+
+  const datasets = [{
+    data: data,
+    fill: false,
+    tension: 0.2,
+    borderColor: color,
+    label: labelFormat(from, to)
+  }];
+
+  const title = {
+    display: true,
+    text: `( ${labelFormat(from, to)} ) Exchange Rate History`,
+  };
 
   return new Chart(ctx, {
     type: "line",
     data: {
       labels: getLast12MonthsNames(),
-      datasets: [
-        {
-          label: `${from.toUpperCase()} - ${to.toUpperCase()}`,
-          data: data,
-          fill: false,
-          borderColor: color,
-          tension: 0.2,
-        },
-      ],
+      datasets
     },
     options: {
       responsive: true,
@@ -32,12 +38,12 @@ export function createChart(ctx: CanvasRenderingContext2D | null, currencyPair: 
       plugins: {
         legend: {
           position: "top",
+          labels: {
+            usePointStyle: true,
+          },
         },
-        title: {
-          display: true,
-          text: `${from.toUpperCase()} - ${to.toUpperCase()} Exchange Rate History`,
-        },
+        title
       },
-    },
+    }
   });
 };
