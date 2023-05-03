@@ -1,22 +1,23 @@
-.chartComponent {
-  width: 85%;
-  height: 50%;
+.chartContainer {
+  width: 80%;
+  margin: auto;
   display: flex;
+  min-height: 70vh;
+  transition: all 1s;
 }
 
 .lineChart {
-  width: 45%;
-  height: 90%;
+  width: 50%;
+  transition: all 1s;
 }
 
-@media only screen and (max-width: 1024px) { 
-  .chartComponent {
-    width: 80%;
-    height: 100%;
+@media only screen and (max-width: 1024px) {
+  .chartContainer {
     flex-direction: column;
   }
+
   .lineChart {
     width: 100%;
-    margin-bottom: 10%;
+    height: 60vh;
   }
 }

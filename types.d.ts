@@ -14,7 +14,7 @@ interface IFormData {
     to: string;
   };
   exchangeRate?: IExchangeRate;
-  amount?: number;
+  amount: number | null;
 };
 
 interface IFormHtmlProps {
@@ -24,20 +24,6 @@ interface IFormHtmlProps {
     formData: IFormData;
     currencies: ICurrency[];
   };
-};
-
-interface IInputProps {
-  label: string;
-  type?: string;
-  value: number;
-  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-};
-
-interface ISelectProps {
-  label: string;
-  value: string;
-  options: { label: string; value: string }[];
-  onChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
 };
 
 interface IAwaitResults {
@@ -65,7 +51,7 @@ interface RenderFormProps {
   formData: IFormData,
   currencies: ICurrency[],
   setFromTo: (option: "from" | "to", value: string) => void
-  setAmount: (amount: string) => void
+  setAmount: (event: React.ChangeEvent<HTMLInputElement>) => void
 };
 
 type HandleSubmitType = React.MouseEvent<HTMLButtonElement, MouseEvent>

@@ -1,16 +1,16 @@
 import React from "react";
 import FormHtml from "./FormView";
-import Container from "../Container";
 import styles from "@/styles/Form.module.css";
 import fetchCurrencies from "@/hooks/useCurrencies";
 import currencyContext from "@/context/currencyContext";
 import fetchExchangeRate from "@/hooks/fetchExchangeRate";
+import Container from "../Container";
 
 export default function FormComponent() {
 
   const fetchedCurrencyData = fetchCurrencies();
   const { appGlobalContext, setAppGlobalContext } = React.useContext(currencyContext);
-  const [formData, setFormData] = React.useState<IFormData>({ currentCurrency: { from: "", to: "" } });
+  const [formData, setFormData] = React.useState<IFormData>({ currentCurrency: { from: "", to: "" }, amount: null });
 
   async function handleSubmit(e: HandleSubmitType) {
     e.preventDefault();
@@ -40,7 +40,7 @@ export default function FormComponent() {
 
       console.log(error);
       return (
-        <div className={styles.form}>
+        <div>
           <h1>error ... {`${error}`}</h1>
         </div>
       )
@@ -56,15 +56,15 @@ export default function FormComponent() {
 
   if (fetchedCurrencyData.loading) {
     return (
-      <div className={styles.form}>
+      <div>
         <h1>loading ... loader spinner here </h1>
       </div>
     )
   };
 
   return (
-    <Container className={styles.form}>
+    <div className={styles.formContainer}>
       <FormHtml props={formHtmlProps} />
-    </Container>
+    </div>
   )
 };

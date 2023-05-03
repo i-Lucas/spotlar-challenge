@@ -1,8 +1,8 @@
 import React from "react";
 import LineChart from ".";
+import Container from "../Container";
 import styles from "@/styles/Chart.module.css";
 import currencyContext from "@/context/currencyContext";
-import Container from "../Container";
 
 export default function ChartComponent() {
 
@@ -11,7 +11,7 @@ export default function ChartComponent() {
 
   if (status.loading) {
     return (
-      <div className={styles.wellcome}>
+      <div>
         <h1>ChartComponent loading spinner here</h1>
       </div>
     )
@@ -23,16 +23,15 @@ export default function ChartComponent() {
 
   if (currencies.from && currencies.to) {
     return (
-      <Container className={styles.chartComponent}>
+      <div className={styles.chartContainer}>
         <LineChart currencyPair={{ from: currencies.from, to: currencies.to, color: "red" }} />
         <LineChart currencyPair={{ from: currencies.to, to: currencies.from, color: "green" }} />
-      </Container>
+      </div>
     )
   };
 
   return (
-    <Container style={{ width: "80%", height: "40%", display: "flex" }}>
-      <h1>Bem vindo</h1>
-    </Container>
+    <div className={styles.chartContainer}>
+    </div>
   )
 };

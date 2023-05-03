@@ -1,7 +1,6 @@
 import React from "react";
 import styles from "@/styles/Footer.module.css";
 import currencyContext from "@/context/currencyContext";
-import Container from "../Container";
 
 export default function Footer() {
 
@@ -9,9 +8,9 @@ export default function Footer() {
 
   if (globalData.status.loading) {
     return (
-      <footer className={styles.footer}>
+      <div>
         <h1>loading spinner here ...</h1>
-      </footer>
+      </div>
     )
   };
 
@@ -24,8 +23,8 @@ export default function Footer() {
   };
 
   return (
-    <Container className={styles.footer}>
+    <div className={styles.footer}>
       {footerContent()}
-    </Container>
+    </div>
   )
 };

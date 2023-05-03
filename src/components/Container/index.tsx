@@ -9,7 +9,7 @@ interface HomeContainerProps {
 
 export default function Container({ children, style, className }: HomeContainerProps) {
   return (
-    <section style={style} className={`${styles.main} ${className}`}>
+    <section style={style} className={styles.main}>
       {children}
     </section>
   )
