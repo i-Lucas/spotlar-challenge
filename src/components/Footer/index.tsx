@@ -1,6 +1,7 @@
 import React from "react";
 import styles from "@/styles/Footer.module.css";
 import currencyContext from "@/context/currencyContext";
+import Container from "../Container";
 
 export default function Footer() {
 
@@ -23,8 +24,8 @@ export default function Footer() {
   };
 
   return (
-    <footer className={styles.footer}>
+    <Container className={styles.footer}>
       {footerContent()}
-    </footer>
+    </Container>
   )
 };

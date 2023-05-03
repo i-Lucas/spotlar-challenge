@@ -1,5 +1,6 @@
 import React from "react";
 import Chart from "chart.js/auto";
+import Container from "../Container";
 import { createChart } from "./createChart";
 import styles from "@/styles/Chart.module.css";
 import getExchangeRateHistory from "@/hooks/last12ExchangeRate";
@@ -82,10 +83,10 @@ const LineChart = ({ currencyPair }: LineChartProps) => {
   };
 
   return (
-    <main className={styles.main}>
+    <Container className={styles.lineChart}>
       <canvas ref={canvasRef} />
-    </main>
-  );
+    </Container>
+  )
 };
 
 export default LineChart;

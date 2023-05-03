@@ -1,5 +1,6 @@
 import React from "react";
 import FormHtml from "./FormView";
+import Container from "../Container";
 import styles from "@/styles/Form.module.css";
 import fetchCurrencies from "@/hooks/useCurrencies";
 import currencyContext from "@/context/currencyContext";
@@ -61,5 +62,9 @@ export default function FormComponent() {
     )
   };
 
-  return <FormHtml props={formHtmlProps} />
+  return (
+    <Container className={styles.form}>
+      <FormHtml props={formHtmlProps} />
+    </Container>
+  )
 };

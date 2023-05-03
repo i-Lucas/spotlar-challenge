@@ -31,7 +31,7 @@ export default function FormHtml({ props }: IFormHtmlProps) {
   };
 
   return (
-    <form className={styles.form}>
+    <form>
       {renderFormContent(renderFormProps)}
       {viewButton && <button onClick={handleSubmit}>{buttonContent}</button>}
     </form>
