@@ -15,3 +15,9 @@
   height: 10.5vh;
   margin-top: 5px;
 }
+
+.alertError {
+  width: 100vw;
+  margin-top: 10px;
+  height: 8vh;
+}

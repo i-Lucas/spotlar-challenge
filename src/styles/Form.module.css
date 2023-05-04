@@ -21,6 +21,12 @@
   min-height: 15vh;
 }
 
+.alertError {
+  width: 80vw;
+  margin-left: 25px;
+  height: 10vh;
+}
+
 @media only screen and (max-width: 1024px) {
   .form {
     padding: 5%;

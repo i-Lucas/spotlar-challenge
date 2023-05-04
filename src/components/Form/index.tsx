@@ -1,10 +1,10 @@
 import React from "react";
 import FormHtml from "./FormView";
-import { Skeleton } from "@mui/material";
 import styles from "@/styles/Form.module.css";
 import fetchCurrencies from "@/hooks/useCurrencies";
 import currencyContext from "@/context/currencyContext";
 import fetchExchangeRate from "@/hooks/fetchExchangeRate";
+import { Alert, AlertTitle, Skeleton } from "@mui/material";
 
 export default function FormComponent() {
 
@@ -38,13 +38,8 @@ export default function FormComponent() {
       });
 
     } catch (error) {
-
       console.log(error);
-      return (
-        <div>
-          <h1>error ... {`${error}`}</h1>
-        </div>
-      )
+      setAppGlobalContext({ ...appGlobalContext, status: { loading: false, error: `${error}` } })
     };
   };
 
@@ -63,8 +58,13 @@ export default function FormComponent() {
 
     if (error) {
       return (
-        <div>
-          error form
+        <div className={styles.formContainer}>
+          <Alert severity="error" variant="outlined" className={styles.alertError}>
+            <AlertTitle>Error</AlertTitle>
+            sorry, something went wrong. — <strong>please try again</strong>
+            <br />
+            message: {error}
+          </Alert>
         </div>
       )
     };

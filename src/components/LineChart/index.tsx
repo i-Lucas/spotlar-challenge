@@ -1,5 +1,6 @@
 import React from "react";
 import Chart from "chart.js/auto";
+import { Alert, AlertTitle, Skeleton } from "@mui/material";
 import { createChart } from "./createChart";
 import styles from "@/styles/Chart.module.css";
 import getExchangeRateHistory from "@/hooks/last12ExchangeRate";
@@ -17,15 +18,21 @@ const LineChart = ({ currencyPair }: LineChartProps) => {
   const chartRef = React.useRef<Chart>();
   const [data, setData] = React.useState<number[]>([]);
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
+  const [status, setStatus] = React.useState({
+    loading: false, error: ""
+  });
 
   React.useEffect(() => {
 
     (async () => {
       try {
+        setStatus({ ...status, loading: true });
         const response = await getExchangeRateHistory(currencyPair.from, currencyPair.to);
         setData(response);
+        setStatus({ ...status, loading: false });
       } catch (error) {
         console.error(error);
+        setStatus({ ...status, error: `${error}` });
       }
     })();
 
@@ -51,6 +58,30 @@ const LineChart = ({ currencyPair }: LineChartProps) => {
     return () => destroyChart();
 
   }, [data, currencyPair]);
+
+  if (status.loading) {
+    return (
+      <div className={styles.lineChart}>
+        <Skeleton
+          variant="rounded"
+          className={styles.lineChartSkeleton}
+        />
+      </div>
+    )
+  };
+
+  if (status.error.length !== 0) {
+    return (
+      <div className={styles.lineChart}>
+        <Alert severity="error" variant="outlined" className={styles.lineChartError}>
+          <AlertTitle>Error</AlertTitle>
+          sorry, something went wrong. — <strong>please try again</strong>
+          <br /><br />
+          message: {status.error}
+        </Alert>
+      </div>
+    )
+  }
 
   return (
     <div className={styles.lineChart}>

@@ -1,8 +1,8 @@
 import React from "react";
 import LineChart from ".";
-import { Skeleton } from "@mui/material";
 import styles from "@/styles/Chart.module.css";
 import currencyContext from "@/context/currencyContext";
+import { Alert, AlertTitle, Skeleton } from "@mui/material";
 
 export default function ChartComponent() {
 
@@ -29,7 +29,14 @@ export default function ChartComponent() {
 
     if (status.error) {
       return (
-        <div>ChartComponent error ....</div>
+        <div>
+          <Alert severity="error" variant="outlined" className={styles.alertError}>
+            <AlertTitle>Error</AlertTitle>
+            sorry, something went wrong. — <strong>please try again</strong>
+            <br />
+            message: {status.error}
+          </Alert>
+        </div>
       )
     };
 

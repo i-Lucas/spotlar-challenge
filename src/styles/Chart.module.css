@@ -18,6 +18,16 @@
   min-height: 65vh;
 }
 
+.lineChartSkeleton {
+  width: 99%;
+  height: 65vh;
+}
+
+.lineChartError {
+  width: 90%;
+  height: 100%;
+}
+
 .skeletonSpan {
   margin-left: 10px;
 }
@@ -27,6 +37,12 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.alertError {
+  width: 80vw;
+  height: 60vh;
+  margin-top: 50px;
 }
 
 @media only screen and (max-width: 1280px) {
@@ -51,5 +67,10 @@
 
   .skeletonSpan {
     margin-top: 10px;
+  }
+
+  .lineChartSkeleton {
+    width: 100%;
+    height: 55vh;
   }
 }
