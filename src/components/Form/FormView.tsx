@@ -7,7 +7,7 @@ import ComboBox from "./ComboBox";
 
 export default function FormHtml({ props }: IFormHtmlProps) {
 
-  const { appGlobalContext: globalData } = React.useContext(currencyContext);
+  const { appGlobalContext: globalData, setAppGlobalContext } = React.useContext(currencyContext);
   const [initialFormData, setInitialFormData] = React.useState(globalData);
   React.useEffect(() => setInitialFormData(globalData), [globalData]);
 
@@ -16,8 +16,18 @@ export default function FormHtml({ props }: IFormHtmlProps) {
 
   const isEmpty = (str: string) => str.length === 0;
   const isFromAndToEmpty = isEmpty(formData.currentCurrency.from) || isEmpty(formData.currentCurrency.to);
-  const textFieldError = formData.currentCurrency.from && formData.currentCurrency.to && !formData.amount ? true : false;
+
+  const emptyAmount = !formData.amount ? true : false;
+  const currenciesSelected = formData.currentCurrency.from && formData.currentCurrency.to ? true : false;
+  const textFieldError = currenciesSelected && emptyAmount;
   const viewButton = !textFieldError && !isFromAndToEmpty && formData.amount !== null ? true : false;
+
+  function updateStep(option: string) {
+    if (option === "to" && formData.currentCurrency.from
+      || option === "from" && formData.currentCurrency.to) {
+      setAppGlobalContext({ ...globalData, step: 1 })
+    }
+  };
 
   function setFromTo(option: "from" | "to", value: string) {
     setFormData({
@@ -26,11 +36,15 @@ export default function FormHtml({ props }: IFormHtmlProps) {
         ...formData.currentCurrency, [option]: value
       }
     });
+    if (globalData.step !== 1) {
+      updateStep(option);
+    };
   };
 
   function setAmount(event: React.ChangeEvent<HTMLInputElement>) {
     const numberValue = parseInt(event.target.value.replace(/[\D]+/g, '')) / 100;
     setFormData({ ...formData, amount: numberValue });
+    setAppGlobalContext({ ...globalData, step: 0 })
   };
 
   function isFormChanged(): boolean {
@@ -56,8 +70,8 @@ export default function FormHtml({ props }: IFormHtmlProps) {
         value={formData.amount !== null ? formatCurrency(formData.amount) : ""}
       />
 
-      <ComboBox options={currencies} label="From" setFromTo={setFromTo} />
-      <ComboBox options={currencies} label="To" setFromTo={setFromTo} />
+      <ComboBox options={currencies} label="From" setFromTo={setFromTo} disabled={emptyAmount} />
+      <ComboBox options={currencies} label="To" setFromTo={setFromTo} disabled={emptyAmount} />
 
       {viewButton &&
         <ButtonComponent

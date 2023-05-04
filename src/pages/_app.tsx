@@ -5,9 +5,18 @@ import currencyContext from "@/context/currencyContext";
 
 export default function App({ Component, pageProps }: AppProps) {
 
-  const [appGlobalContext, setAppGlobalContext] = React.useState<IAppCurrencyContext>({
-    currencies: { from: undefined, to: undefined }, status: { loading: false }
-  });
+  const initialAppState: IAppCurrencyContext = {
+    currencies: {
+      from: undefined,
+      to: undefined
+    },
+    status: {
+      loading: false
+    },
+    step: -1
+  };
+
+  const [appGlobalContext, setAppGlobalContext] = React.useState<IAppCurrencyContext>(initialAppState);
 
   return (
     <currencyContext.Provider value={{ appGlobalContext, setAppGlobalContext }} >

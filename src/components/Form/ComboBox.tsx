@@ -5,12 +5,13 @@ import Autocomplete from "@mui/material/Autocomplete";
 interface ComboBoxProps {
   options: ICurrency[];
   label: "From" | "To";
+  disabled: boolean;
   setFromTo: (option: "from" | "to", value: string) => void;
 };
 
 export default function ComboBox(props: ComboBoxProps) {
 
-  const { options, label, setFromTo } = props;
+  const { options, label, disabled, setFromTo } = props;
   const uniqueOptions = Array.from(new Set(options.map(option => option.code))).map(code => {
     return options.find(option => option.code === code);
   });
@@ -26,6 +27,7 @@ export default function ComboBox(props: ComboBoxProps) {
     <Autocomplete
       size="small"
       disablePortal
+      disabled={disabled}
       sx={{ width: 300 }}
       id="combo-box-demo"
       options={filteredOptions}

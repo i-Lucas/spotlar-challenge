@@ -34,7 +34,8 @@ export default function FormComponent() {
           showResult: true,
           amount: formData.amount,
           value: (formData.amount * exchangeRate.rate).toFixed(2),
-        }
+        },
+        step: 2
       });
 
     } catch (error) {
