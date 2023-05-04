@@ -1,9 +1,9 @@
 import React from "react";
+import ComboBox from "./ComboBox";
 import ButtonComponent from "../Button";
+import { TextField } from "@mui/material";
 import styles from "@/styles/Form.module.css";
 import currencyContext from "@/context/currencyContext";
-import { Select, MenuItem, TextField } from "@mui/material";
-import ComboBox from "./ComboBox";
 
 export default function FormHtml({ props }: IFormHtmlProps) {
 
@@ -22,13 +22,6 @@ export default function FormHtml({ props }: IFormHtmlProps) {
   const textFieldError = currenciesSelected && emptyAmount;
   const viewButton = !textFieldError && !isFromAndToEmpty && formData.amount !== null ? true : false;
 
-  function updateStep(option: string) {
-    if (option === "to" && formData.currentCurrency.from
-      || option === "from" && formData.currentCurrency.to) {
-      setAppGlobalContext({ ...globalData, step: 1 })
-    }
-  };
-
   function setFromTo(option: "from" | "to", value: string) {
     setFormData({
       ...formData,
@@ -36,8 +29,11 @@ export default function FormHtml({ props }: IFormHtmlProps) {
         ...formData.currentCurrency, [option]: value
       }
     });
-    if (globalData.step !== 1) {
-      updateStep(option);
+    if (globalData.step === 0) {
+      if (option === "to" && formData.currentCurrency.from
+        || option === "from" && formData.currentCurrency.to) {
+        setAppGlobalContext({ ...globalData, step: 1 })
+      }
     };
   };
 
@@ -61,6 +57,7 @@ export default function FormHtml({ props }: IFormHtmlProps) {
     <form className={styles.form}>
       <TextField
         size="small"
+        sx={{ width: 310 }}
         onChange={setAmount}
         error={textFieldError}
         onKeyPress={onlyNumbers}

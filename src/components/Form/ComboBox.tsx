@@ -28,7 +28,7 @@ export default function ComboBox(props: ComboBoxProps) {
       size="small"
       disablePortal
       disabled={disabled}
-      sx={{ width: 300 }}
+      sx={{ width: 310 }}
       id="combo-box-demo"
       options={filteredOptions}
       renderInput={(params) => <TextField {...params} label={label} />}
