@@ -1,6 +1,7 @@
 import React from "react";
 import ComboBox from "./ComboBox";
 import ButtonComponent from "../Button";
+import appSteps from "@/utils/appSteps";
 import { TextField } from "@mui/material";
 import styles from "@/styles/Form.module.css";
 import currencyContext from "@/context/currencyContext";
@@ -13,6 +14,7 @@ export default function FormHtml({ props }: IFormHtmlProps) {
 
   const { formData, currencies } = props;
   const { setFormData, handleSubmit } = props;
+  const { AMOUNT_STEP, CURRENCIES_STEP, INITIAL_STEP } = appSteps;
 
   const isEmpty = (str: string) => str.length === 0;
   const isFromAndToEmpty = isEmpty(formData.currentCurrency.from) || isEmpty(formData.currentCurrency.to);
@@ -29,10 +31,10 @@ export default function FormHtml({ props }: IFormHtmlProps) {
         ...formData.currentCurrency, [option]: value
       }
     });
-    if (globalData.step === 0) {
+    if (globalData.step === AMOUNT_STEP) {
       if (option === "to" && formData.currentCurrency.from
         || option === "from" && formData.currentCurrency.to) {
-        setAppGlobalContext({ ...globalData, step: 1 })
+        setAppGlobalContext({ ...globalData, step: CURRENCIES_STEP })
       }
     };
   };
@@ -40,7 +42,9 @@ export default function FormHtml({ props }: IFormHtmlProps) {
   function setAmount(event: React.ChangeEvent<HTMLInputElement>) {
     const numberValue = parseInt(event.target.value.replace(/[\D]+/g, '')) / 100;
     setFormData({ ...formData, amount: numberValue });
-    setAppGlobalContext({ ...globalData, step: 0 })
+    if (globalData.step === INITIAL_STEP) {
+      setAppGlobalContext({ ...globalData, step: AMOUNT_STEP })
+    };
   };
 
   function isFormChanged(): boolean {

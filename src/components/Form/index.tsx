@@ -1,5 +1,6 @@
 import React from "react";
 import FormHtml from "./FormView";
+import appSteps from "@/utils/appSteps";
 import styles from "@/styles/Form.module.css";
 import fetchCurrencies from "@/hooks/useCurrencies";
 import currencyContext from "@/context/currencyContext";
@@ -12,6 +13,7 @@ export default function FormComponent() {
   const { appGlobalContext, setAppGlobalContext } = React.useContext(currencyContext);
   const [formData, setFormData] = React.useState<IFormData>({ currentCurrency: { from: "", to: "" }, amount: null });
   const { loading, error } = fetchedCurrencyData;
+  const { CONVERT_STEP } = appSteps;
 
   async function handleSubmit(e: HandleSubmitType) {
     e.preventDefault();
@@ -35,7 +37,7 @@ export default function FormComponent() {
           amount: formData.amount,
           value: (formData.amount * exchangeRate.rate).toFixed(2),
         },
-        step: 2
+        step: CONVERT_STEP
       });
 
     } catch (error) {

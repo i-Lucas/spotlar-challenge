@@ -1,5 +1,6 @@
 import React from "react";
 import "@/styles/reset.css";
+import appSteps from "@/utils/appSteps";
 import type { AppProps } from "next/app";
 import currencyContext from "@/context/currencyContext";
 
@@ -13,7 +14,7 @@ export default function App({ Component, pageProps }: AppProps) {
     status: {
       loading: false
     },
-    step: -1
+    step: appSteps.INITIAL_STEP
   };
 
   const [appGlobalContext, setAppGlobalContext] = React.useState<IAppCurrencyContext>(initialAppState);

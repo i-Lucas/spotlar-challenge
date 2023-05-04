@@ -1,17 +1,16 @@
 import React from "react";
 import Box from "@mui/material/Box";
 import Fade from "@mui/material/Fade";
+import { Alert } from "@mui/material";
 import Modal from "@mui/material/Modal";
 import Backdrop from "@mui/material/Backdrop";
 import Typography from "@mui/material/Typography";
 import currencyContext from "@/context/currencyContext";
-import { Alert, AlertTitle } from "@mui/material";
 
 const style = {
   p: 1,
   top: "50%",
   left: "50%",
-  // width: "50%",
   boxShadow: 24,
   bgcolor: "background.paper",
   transform: "translate(-50%, -50%)",
@@ -24,7 +23,7 @@ export default function ModalResult() {
   const [open, setOpen] = React.useState(true);
   const handleClose = () => setOpen(false);
 
-  let label = ""
+  let label = "";
   if (globalData.result) {
     const { amount, value } = globalData.result;
     const { from, to } = globalData.currencies;
