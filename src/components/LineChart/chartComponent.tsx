@@ -3,6 +3,7 @@ import LineChart from ".";
 import styles from "@/styles/Chart.module.css";
 import currencyContext from "@/context/currencyContext";
 import { Alert, AlertTitle, Skeleton } from "@mui/material";
+import ModalResult from "../Modal";
 
 export default function ChartComponent() {
 
@@ -43,6 +44,7 @@ export default function ChartComponent() {
     if (currencies.from && currencies.to) {
       return (
         <>
+          <ModalResult />
           <LineChart currencyPair={{ from: currencies.from, to: currencies.to, color: "red" }} />
           <LineChart currencyPair={{ from: currencies.to, to: currencies.from, color: "green" }} />
         </>

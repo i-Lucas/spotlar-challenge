@@ -1,8 +1,8 @@
 import React from "react";
+import FooterStepper from "../Stepper";
 import styles from "@/styles/Footer.module.css";
 import currencyContext from "@/context/currencyContext";
 import { Alert, AlertTitle, Skeleton } from "@mui/material";
-import FooterStepper from "../Stepper";
 
 export default function Footer() {
 
@@ -26,21 +26,12 @@ export default function Footer() {
       )
     };
 
-    if (globalData.result?.showResult) {
-      const { amount, value } = globalData.result;
-      const { from, to } = globalData.currencies;
-      return (
-        <div>
-          <h1>{amount} {from} is {value} {to}</h1>
-
-        </div>
-      )
-    };
+    return <FooterStepper step={globalData.step} />
   };
 
   return (
     <div className={styles.footer}>
-      <FooterStepper step={globalData.step} />
+      {footerContent()}
     </div>
   )
 };

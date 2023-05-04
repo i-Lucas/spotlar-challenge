@@ -45,7 +45,7 @@ interface IAppCurrencyContext {
     amount: number;
     value: string;
   },
-  step?: number
+  step?: number,
 };
 
 interface RenderFormProps {
