@@ -3,6 +3,7 @@ import ButtonComponent from "../Button";
 import styles from "@/styles/Form.module.css";
 import currencyContext from "@/context/currencyContext";
 import { Select, MenuItem, TextField } from "@mui/material";
+import ComboBox from "./ComboBox";
 
 export default function FormHtml({ props }: IFormHtmlProps) {
 
@@ -12,14 +13,19 @@ export default function FormHtml({ props }: IFormHtmlProps) {
 
   const { formData, currencies } = props;
   const { setFormData, handleSubmit } = props;
-  const selectCurrencyList = buildMenuItems(currencies);
 
   const isEmpty = (str: string) => str.length === 0;
   const isFromAndToEmpty = isEmpty(formData.currentCurrency.from) || isEmpty(formData.currentCurrency.to);
-  const viewButton = !isFromAndToEmpty && formData.amount !== null ? true : false;
+  const textFieldError = formData.currentCurrency.from && formData.currentCurrency.to && !formData.amount ? true : false;
+  const viewButton = !textFieldError && !isFromAndToEmpty && formData.amount !== null ? true : false;
 
   function setFromTo(option: "from" | "to", value: string) {
-    setFormData({ ...formData, currentCurrency: { ...formData.currentCurrency, [option]: value } });
+    setFormData({
+      ...formData,
+      currentCurrency: {
+        ...formData.currentCurrency, [option]: value
+      }
+    });
   };
 
   function setAmount(event: React.ChangeEvent<HTMLInputElement>) {
@@ -40,59 +46,34 @@ export default function FormHtml({ props }: IFormHtmlProps) {
   return (
     <form className={styles.form}>
       <TextField
-        label="Amount"
         size="small"
-        value={formData.amount !== null ? formatCurrency(formData.amount) : ''}
         onChange={setAmount}
+        error={textFieldError}
         onKeyPress={onlyNumbers}
         InputLabelProps={{ shrink: true }}
+        label={textFieldError ? "Error" : "Amount"}
+        helperText={textFieldError && "put something here ( $1.00 )"}
+        value={formData.amount !== null ? formatCurrency(formData.amount) : ""}
       />
 
-      <Select
-        label="From:"
-        size="small"
-        value={formData.currentCurrency.from}
-        onChange={(e) => setFromTo("from", e.target.value)}
-        displayEmpty
-      >
-        <MenuItem value="" disabled>From</MenuItem>
-        {selectCurrencyList}
-      </Select>
-
-      <Select
-        label="To:"
-        size="small"
-        value={formData.currentCurrency.to}
-        onChange={(e) => setFromTo("to", e.target.value)}
-        displayEmpty
-      >
-        <MenuItem value="" disabled>To</MenuItem>
-        {selectCurrencyList}
-      </Select>
+      <ComboBox options={currencies} label="From" setFromTo={setFromTo} />
+      <ComboBox options={currencies} label="To" setFromTo={setFromTo} />
 
       {viewButton &&
         <ButtonComponent
           content={"convert"}
-          loading={globalData.status.loading}
           onClick={handleSubmit}
           disabled={!isFormChanged()}
+          loading={globalData.status.loading}
         />}
     </form >
   );
 };
 
-function buildMenuItems(currencies: ICurrency[]) {
-  return currencies.map((currency) => (
-    <MenuItem key={currency.code} value={currency.code}>
-      {`${currency.name} (${currency.code})`}
-    </MenuItem>
-  ));
-};
-
 function formatCurrency(value: number): string {
   return value.toLocaleString('en-US', {
-    style: 'currency',
     currency: 'USD',
+    style: 'currency',
     currencyDisplay: 'symbol'
   });
 };
