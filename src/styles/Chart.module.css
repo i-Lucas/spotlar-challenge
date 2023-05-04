@@ -7,17 +7,49 @@
 }
 
 .lineChart {
-  width: 50%;
+  width: 100%;
+  height: 65vh;
+  margin: 20px 0;
   transition: all 1s;
 }
 
-@media only screen and (max-width: 1024px) {
+.skeleton {
+  width: 50%;
+  min-height: 65vh;
+}
+
+.skeletonSpan {
+  margin-left: 10px;
+}
+
+.skeletonDiv {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@media only screen and (max-width: 1280px) {
+
   .chartContainer {
     flex-direction: column;
   }
 
   .lineChart {
     width: 100%;
-    height: 60vh;
+    height: 55vh;
+  }
+
+  .skeletonDiv {
+    flex-direction: column;
+  }
+
+  .skeleton {
+    width: 100%;
+    height: 55vh;
+  }
+
+  .skeletonSpan {
+    margin-top: 10px;
   }
 }

@@ -3,7 +3,7 @@ export function getLast12MonthsNames(): string[] {
   const date = new Date();
 
   for (let i = 0; i < 12; i++) {
-    months.unshift(date.toLocaleString('default', { month: 'long' }));
+    months.unshift(date.toLocaleString("en-US", { month: "short" }));
     date.setMonth(date.getMonth() - 1);
   };
 

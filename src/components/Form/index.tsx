@@ -1,16 +1,17 @@
 import React from "react";
 import FormHtml from "./FormView";
+import { Skeleton } from "@mui/material";
 import styles from "@/styles/Form.module.css";
 import fetchCurrencies from "@/hooks/useCurrencies";
 import currencyContext from "@/context/currencyContext";
 import fetchExchangeRate from "@/hooks/fetchExchangeRate";
-import Container from "../Container";
 
 export default function FormComponent() {
 
   const fetchedCurrencyData = fetchCurrencies();
   const { appGlobalContext, setAppGlobalContext } = React.useContext(currencyContext);
   const [formData, setFormData] = React.useState<IFormData>({ currentCurrency: { from: "", to: "" }, amount: null });
+  const { loading, error } = fetchedCurrencyData;
 
   async function handleSubmit(e: HandleSubmitType) {
     e.preventDefault();
@@ -54,17 +55,26 @@ export default function FormComponent() {
     currencies: fetchedCurrencyData.currencies
   };
 
-  if (fetchedCurrencyData.loading) {
-    return (
-      <div>
-        <h1>loading ... loader spinner here </h1>
-      </div>
-    )
+  function renderForm() {
+
+    if (loading) {
+      return <Skeleton variant="rounded" className={styles.skeleton} />
+    };
+
+    if (error) {
+      return (
+        <div>
+          error form
+        </div>
+      )
+    };
+
+    return <FormHtml props={formHtmlProps} />;
   };
 
   return (
     <div className={styles.formContainer}>
-      <FormHtml props={formHtmlProps} />
+      {renderForm()}
     </div>
   )
 };

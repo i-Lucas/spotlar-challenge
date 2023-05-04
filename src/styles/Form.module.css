@@ -15,8 +15,13 @@
   transition: all 1s;
 }
 
-@media only screen and (max-width: 1024px) {
+.skeleton {
+  width: 80%;
+  margin: auto;
+  min-height: 15vh;
+}
 
+@media only screen and (max-width: 1024px) {
   .form {
     padding: 5%;
     height: 25vh;
