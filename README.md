@@ -1,4 +1,5 @@
-# todo 
+# Spotlar Challenge Conversor de Moedas
 
-* exibir o resultado
-* quebrar tudo em funções menores e refatorar
+* Clone o projeto
+* Execute o comando ```npm i``` para instalar as dependências do projeto
+* Execute ```npm run dev``` para rodar o projeto localmente
