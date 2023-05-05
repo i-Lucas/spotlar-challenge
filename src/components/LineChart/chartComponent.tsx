@@ -43,17 +43,17 @@ export default function ChartComponent() {
 
     if (currencies.from && currencies.to) {
       return (
-        <>
+        <div className={styles.chartContainer}>
           <LineChart currencyPair={{ from: currencies.from, to: currencies.to, color: "red" }} />
           <LineChart currencyPair={{ from: currencies.to, to: currencies.from, color: "green" }} />
           <ModalResult />
-        </>
+        </div>
       )
     };
   };
 
   return (
-    <div className={styles.chartContainer}>
+    <div className={styles.emptyChart}>
       {renderCharts()}
     </div>
   )

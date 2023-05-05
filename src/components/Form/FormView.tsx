@@ -6,7 +6,13 @@ import { TextField } from "@mui/material";
 import styles from "@/styles/Form.module.css";
 import currencyContext from "@/context/currencyContext";
 
+import { useTheme } from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
+
 export default function FormHtml({ props }: IFormHtmlProps) {
+
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("xl"));
 
   const { appGlobalContext: globalData, setAppGlobalContext } = React.useContext(currencyContext);
   const [initialFormData, setInitialFormData] = React.useState(globalData);
@@ -40,7 +46,7 @@ export default function FormHtml({ props }: IFormHtmlProps) {
   };
 
   function setAmount(event: React.ChangeEvent<HTMLInputElement>) {
-    const numberValue = parseInt(event.target.value.replace(/[\D]+/g, '')) / 100;
+    const numberValue = parseInt(event.target.value.replace(/[\D]+/g, "")) / 100;
     setFormData({ ...formData, amount: numberValue });
     if (globalData.step === INITIAL_STEP) {
       setAppGlobalContext({ ...globalData, step: AMOUNT_STEP })
@@ -61,7 +67,7 @@ export default function FormHtml({ props }: IFormHtmlProps) {
     <form className={styles.form}>
       <TextField
         size="small"
-        sx={{ width: 310 }}
+        sx={{ width: isSmallScreen ? "90%" : "25%" }}
         onChange={setAmount}
         error={textFieldError}
         onKeyPress={onlyNumbers}
@@ -71,8 +77,8 @@ export default function FormHtml({ props }: IFormHtmlProps) {
         value={formData.amount !== null ? formatCurrency(formData.amount) : ""}
       />
 
-      <ComboBox options={currencies} label="From" setFromTo={setFromTo} disabled={emptyAmount} />
-      <ComboBox options={currencies} label="To" setFromTo={setFromTo} disabled={emptyAmount} />
+      <ComboBox options={currencies} label="From" setFromTo={setFromTo} disabled={emptyAmount} isSmallScreen={isSmallScreen} />
+      <ComboBox options={currencies} label="To" setFromTo={setFromTo} disabled={emptyAmount} isSmallScreen={isSmallScreen} />
 
       {viewButton &&
         <ButtonComponent
@@ -86,9 +92,9 @@ export default function FormHtml({ props }: IFormHtmlProps) {
 };
 
 function formatCurrency(value: number): string {
-  return value.toLocaleString('en-US', {
-    currency: 'USD',
-    style: 'currency',
-    currencyDisplay: 'symbol'
+  return value.toLocaleString("en-US", {
+    currency: "USD",
+    style: "currency",
+    currencyDisplay: "symbol"
   });
 };

@@ -6,12 +6,13 @@ interface ComboBoxProps {
   options: ICurrency[];
   label: "From" | "To";
   disabled: boolean;
+  isSmallScreen: boolean;
   setFromTo: (option: "from" | "to", value: string) => void;
 };
 
 export default function ComboBox(props: ComboBoxProps) {
 
-  const { options, label, disabled, setFromTo } = props;
+  const { options, label, disabled, isSmallScreen, setFromTo } = props;
   const uniqueOptions = Array.from(new Set(options.map(option => option.code))).map(code => {
     return options.find(option => option.code === code);
   });
@@ -28,7 +29,7 @@ export default function ComboBox(props: ComboBoxProps) {
       size="small"
       disablePortal
       disabled={disabled}
-      sx={{ width: 310 }}
+      sx={{ width: isSmallScreen ? "90%" : "25%" }}
       id="combo-box-demo"
       options={filteredOptions}
       renderInput={(params) => <TextField {...params} label={label} />}
