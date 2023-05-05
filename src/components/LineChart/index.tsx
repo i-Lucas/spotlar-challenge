@@ -31,7 +31,6 @@ const LineChart = ({ currencyPair }: LineChartProps) => {
         setData(response);
         setStatus({ ...status, loading: false });
       } catch (error) {
-        console.error(error);
         setStatus({ ...status, error: `${error}` });
       }
     })();
