@@ -25,6 +25,14 @@ export default function fetchCurrencies() {
 
   }, [currencies.loading]);
 
-  return currencies;
-};
+  const excludedCurrencies = ["bake"];
+  const filteredCurrencies = currencies.currencies.filter((currency) => {
+    return !excludedCurrencies.some((string) => currency.code.toLowerCase().includes(string.toLowerCase()));
+  });
 
+  return {
+    currencies: filteredCurrencies,
+    loading: currencies.loading,
+    error: currencies.error
+  };
+};

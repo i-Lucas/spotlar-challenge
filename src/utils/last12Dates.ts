@@ -10,22 +10,34 @@ export function getLast12MonthsNames(): string[] {
   return months;
 };
 
-export function getLast12MonthsDates() {
 
+export function getLast12MonthsDates() {
   const dates = [];
+
   const today = new Date();
+  const yesterday = getYesterday(today);
 
   for (let i = 11; i >= 0; i--) {
+    const firstDayOfMonth = getFirstDayOfMonth(today, i);
+    const lastDayOfMonth = getLastDayOfMonth(today, i);
 
-    const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth() - i, 1);
-    const lastDayOfMonth = new Date(today.getFullYear(), today.getMonth() - i + 1, 0).getDate();
-
-    if (firstDayOfMonth.getMonth() === today.getMonth()) {
-      dates.push(today.toISOString().slice(0, 10));
-    } else {
-      dates.push(new Date(today.getFullYear(), today.getMonth() - i, lastDayOfMonth).toISOString().slice(0, 10));
-    }
-  };
+    const date = firstDayOfMonth.getMonth() === today.getMonth() ? yesterday : lastDayOfMonth;
+    dates.push(date.toISOString().slice(0, 10));
+  }
 
   return dates;
+};
+
+function getYesterday(date: Date) {
+  const yesterday = new Date(date.getTime());
+  yesterday.setDate(yesterday.getDate() - 1);
+  return yesterday;
+};
+
+function getFirstDayOfMonth(date: Date, offset: number) {
+  return new Date(date.getFullYear(), date.getMonth() - offset, 1);
+};
+
+function getLastDayOfMonth(date: Date, offset: number) {
+  return new Date(date.getFullYear(), date.getMonth() - offset + 1, 0);
 };
